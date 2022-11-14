@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Level</title>
+    <link rel="stylesheet" href="Beranda.css" />
+  </head>
+  <body>
+    <div id="Container-Level">
+      <h1 id="title-level">Select Level</h1>
+
+      <li class="Pilihan">
+        <button onclick="PlayLevelOne()" class="btn-opsi" id="playbtn">
+          Level 1
+        </button>
+      </li>
+      <li class="Pilihan">
+        <button onclick="PlayLevelTwo()" class="btn-opsi" id="playbtn">
+          Level 2
+        </button>
+      </li>
+      <li class="Pilihan">
+        <button onclick="PlayLevelThree()" class="btn-opsi" id="playbtn">
+          Level 3
+        </button>
+      </li>
+      <li class="Pilihan">
+        <button class="btn-opsi">
+          <a href="MainMenu.html">Back</a>
+        </button>
+      </li>
+    </div>
+    <div id="menuPauseButton">
+      <button onclick="PauseButton()" class="StopButton" id="PauseButton">
+        | |
+      </button>
+    </div>
+    <div id="menuPause">
+      <button onclick="ResumeButton()" class="Resume" id="btnresume">
+        Resume
+      </button>
+      <button onclick="ExitButton()" class="Exit" id="btnexit">Exit</button>
+    </div>
+
+    <div class="centeritem">
+      <canvas width="1380" height="680" id="canvas">
+        <!-- <div id="GameOver">
+          <button>Play Again?</button>
+        </div> -->
+      </canvas>
+    </div>
+    <script src="Level1.js"></script>
+  </body>
+</html>
