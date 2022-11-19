@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./LevelTwo.css" />
+    <style>
+      canvas {
+        border: 1px solid #d3d3d3;
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body onload="startGame()">
+    <div>
+      <div class="paused" id="btnpaused">
+        <button onclick="Paused()">| |</button>
+      </div>
+      <canvas width="1280" height="720" id="canvas" class="AreaGame"> </canvas>
+      <div class="gameover" id="btnGameover">
+        <h1>GAME OVER</h1>
+        <h2>You Lose</h2>
+        <h2>Play Again?</h2>
+        <button onclick="Restart()">Play Again?</button>
+        <a href="../MainMenu/Level.html"> <button>Quit</button> </a>
+      </div>
+      <div class="gamefinish" id="btnGamefinish">
+        <h1>GAME Finish</h1>
+        <br />
+        <br />
+        <h2>You Win</h2>
+        <h2>Next Level?</h2>
+        <li>
+          <a href=""> <button>Restart?</button> </a>
+        </li>
+      </div>
+      <div class="pausegame" id="btnpausegame">
+        <h1>Pause Game</h1>
+        <li><button onclick="Resume()">Resume</button></li>
+        <li><button onclick="Restart()">Restart</button></li>
+        <!-- Tombol quit -->
+        <li>
+          <a href="../MainMenu/Level.html">
+            <button>Quit</button>
+          </a>
+        </li>
+      </div>
+    </div>
+
+    <script>
+      var myGamePiece;
+      var myObstacles = [];
+      var myObstaclesFinish = [];
+      var myScore;
+      var myBackground;
+      var btnGameFinish = document.getElementById("btnGamefinish");
+      var btnGameover = document.getElementById("btnGameover");
+      var btnPausegame = document.getElementById("btnpausegame");
+
+      //   Pause menu
+      function Paused() {
+        myGameArea.stop();
+        Pausegame();
+      }
+
+      //   Resume menu
+      function Resume() {
+        myGameArea.start();
+        HidePausegame();
+      }
+      //   DOM untuk Pause Button
+      function Pausegame() {
+        if (btnPausegame.style.display == "none") {
+          btnPausegame.style.display = "block";
+        } else {
+          btnPausegame.style.display = "block";
+        }
+      }
+
+      function HidePausegame() {
+        if (btnPausegame.style.display == "block") {
+          btnPausegame.style.display = "none";
+        } else {
+          btnPausegame.style.display = "none";
+        }
+      }
+
+      //   DOM untuk button gameover
+      function Gameover() {
+        if (btnGameover.style.display == "none") {
+          btnGameover.style.display = "block";
+        } else {
+          btnGameover.style.display = "block";
+        }
+      }
+
+      // DOM untuk game finish
+      function GameFinish() {
+        if (btnGameFinish.style.display == "none") {
+          btnGameFinish.style.display = "block";
+        } else {
+          btnGameFinish.style.display = "block";
+        }
+      }
+
+      //   Reset Button
+      function Restart() {
+        window.location.reload();
+      }
+
+      function startGame() {
+        myGamePiece = new component(
+          100,
+          100,
+          "../Img/Ninja.png",
+          10,
+          120,
+          "image"
+        );
+        myBackground = new component(
+          1280,
+          720,
+          "../Img/BackgroundNew.png",
+          0,
+          0,
+          "image"
+        );
+        // untuk mengatur gravitasi
+        myGamePiece.gravity = 0.2;
+        myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+        myGameArea.start();
+      }
+
+      // Untuk memulai game
+      var myGameArea = {
+        canvas: document.getElementById("canvas"),
+        start: function () {
+          this.context = this.canvas.getContext("2d");
+          document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+          this.frameNo = 0;
+          this.interval = setInterval(updateGameArea, 20);
+          ObstaclesEasy();
+          // GameFinish();
+          Finish();
+
+          // Untuk keyboard sebagai controller
+          window.addEventListener("keydown", function (e) {
+            myGameArea.key = e.keyCode;
+          });
+          window.addEventListener("keyup", function (e) {
+            myGameArea.key = false;
+          });
+        },
+        clear: function () {
+          this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        },
+        // function untuk berhenti
+        stop: function () {
+          clearInterval(this.interval);
+        },
+      };
+
+      function component(width, height, color, x, y, type) {
+        this.type = type;
+        if (type == "image") {
+          this.image = new Image();
+          this.image.src = color;
+        }
+        this.score = 0;
+        this.width = width;
+        this.height = height;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.x = x;
+        this.y = y;
+        this.gravity = 0;
+        this.gravitySpeed = 0;
+        this.update = function () {
+          ctx = myGameArea.context;
+          if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+          } else {
+            ctx = myGameArea.context;
+            if (type == "image") {
+              ctx.drawImage(
+                this.image,
+                this.x,
+                this.y,
+                this.width,
+                this.height
+              );
+            } else {
+              ctx.fillStyle = color;
+              ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+          }
+        };
+        this.newPos = function () {
+          this.gravitySpeed += this.gravity;
+          this.x += this.speedX;
+          this.y += this.speedY + this.gravitySpeed;
+          this.hitBottom();
+          this.hitTop();
+        };
+        this.hitBottom = function () {
+          var rockbottom = myGameArea.canvas.height - this.height;
+          if (this.y > rockbottom) {
+            this.y = rockbottom;
+            this.gravitySpeed = 0;
+          }
+        };
+        this.hitTop = function () {
+          var rocktop = myGameArea.canvas.height - 720;
+          if (this.y < rocktop) {
+            this.y = rocktop;
+          }
+        };
+        // function jika karakter nabrak obstacle
+        this.crashWith = function (otherobj) {
+          var myleft = this.x;
+          var myright = this.x + this.width;
+          var mytop = this.y;
+          var mybottom = this.y + this.height;
+          var otherleft = otherobj.x;
+          var otherright = otherobj.x + otherobj.width;
+          var othertop = otherobj.y;
+          var otherbottom = otherobj.y + otherobj.height;
+          var crash = true;
+          if (
+            mybottom < othertop ||
+            mytop > otherbottom ||
+            myright < otherleft ||
+            myleft > otherright
+          ) {
+            crash = false;
+          }
+          return crash;
+        };
+      }
+
+      // Obstacle manual
+      function ObstaclesEasy() {
+        x = myGameArea.canvas.width;
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleBawah.png",
+            x,
+            400,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleAtas.png",
+            1600,
+            -130,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleBawah.png",
+            1900,
+            400,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleAtas.png",
+            2400,
+            -50,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleAtas.png",
+            2850,
+            -200,
+            "image"
+          ),
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleBawah.png",
+            2850,
+            500,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleAtas.png",
+            3350,
+            -270,
+            "image"
+          ),
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleBawah.png",
+            3350,
+            370,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            500,
+            "../Img/NewObstacleAtas.png",
+            3850,
+            -150,
+            "image"
+          ),
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleBawah.png",
+            3850,
+            600,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            500,
+            "../Img/NewObstacleAtas.png",
+            4350,
+            -300,
+            "image"
+          ),
+          new component(
+            100,
+            400,
+            "../Img/NewObstacleBawah.png",
+            4350,
+            400,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            500,
+            "../Img/NewObstacleAtas.png",
+            5000,
+            0,
+            "image"
+          )
+        );
+        myObstacles.push(
+          new component(
+            100,
+            500,
+            "../Img/NewObstacleBawah.png",
+            5700,
+            230,
+            "image"
+          )
+        );
+      }
+
+      function Finish() {
+        myObstaclesFinish.push(
+          new component(
+            300,
+            400,
+            "../Img/NewObstacleBawah.png",
+            7000,
+            200,
+            "image"
+          )
+        );
+      }
+
+      console.log(myObstaclesFinish);
+      function updateGameArea() {
+        // Gameover ketika karakter menabrak obstacle
+        for (i = 0; i < myObstacles.length; i += 1) {
+          if (myGamePiece.crashWith(myObstacles[i])) {
+            Gameover();
+            return;
+          }
+        }
+        for (j = 0; j < myObstaclesFinish.length; j += 1) {
+          if (myGamePiece.crashWith(myObstaclesFinish[j])) {
+            GameFinish();
+            return;
+          }
+        }
+        myGameArea.clear();
+        // Background
+        myBackground.update();
+        // Logika character bergerak
+        myGamePiece.speedX = 0;
+        myGamePiece.speedY = 0;
+        if (
+          (myGameArea.key && myGameArea.key == 87) ||
+          (myGameArea.key && myGameArea.key == 38)
+        ) {
+          myGamePiece.speedY = -10;
+          myGamePiece.gravitySpeed = 0;
+        }
+        myGameArea.frameNo += 1;
+        // if (myGameArea.frameNo == 1 || everyinterval(150)) {
+        //   ObstaclesEasy();
+        // }
+
+        // Logika perulangan obstacle bergerak
+        for (i = 0; i < myObstacles.length; i += 1) {
+          myObstacles[i].x += -10;
+          myObstacles[i].update();
+        }
+        for (j = 0; j < myObstaclesFinish.length; j += 1) {
+          myObstaclesFinish[j].x += -10;
+          myObstaclesFinish[j].update();
+        }
+
+        myScore.text = "SCORE: " + myGameArea.frameNo;
+        myScore.update();
+        myGamePiece.newPos();
+        myGamePiece.update();
+        // Finish
+        if (myObstacles.length == 10) {
+          alert("You Win");
+        }
+      }
+
+      function everyinterval(n) {
+        if ((myGameArea.frameNo / n) % 1 == 0) {
+          return true;
+        }
+        return false;
+      }
+    </script>
+  </body>
+</html>

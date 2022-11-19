@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.btnBack {
+  position: relative;
+  margin-top: 20px;
+  margin-left: 400px;
+  width: 400px;
+  height: 60px;
+}

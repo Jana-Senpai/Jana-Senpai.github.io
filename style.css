@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(206, 45, 9);
+}
+
+#title-Game {
+  position: absolute;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 800;
+  font-size: 30px;
+  color: white;
+  left: 480px;
+  top: 30px;
+}
+
+#Container {
+  display: block;
+  background-color: aqua;
+  position: absolute;
+  left: 400px;
+  top: 150px;
+  width: 600px;
+  height: 400px;
+}
+
+.title-mainMenu {
+  position: relative;
+  margin-top: 20px;
+  margin-left: 180px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 50px;
+}
+
+#Container li {
+  list-style-type: none;
+}
+
+#Container li a {
+  text-decoration: none;
+}
+
+#Container li a button {
+  position: relative;
+  font-family: "Times New Roman", Times, serif;
+  background-color: blue;
+  font-size: 24px;
+  margin-left: 100px;
+}
+
+.btnPlay {
+  position: relative;
+  margin-top: 40px;
+  width: 400px;
+  height: 60px;
+}
+.btnAbout {
+  position: relative;
+  margin-top: 20px;
+  width: 400px;
+  height: 60px;
+}
+.btnSetting {
+  position: relative;
+  margin-top: 20px;
+  width: 400px;
+  height: 60px;
+}
