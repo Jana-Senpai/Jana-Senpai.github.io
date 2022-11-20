@@ -14,7 +14,9 @@
     <div>
       <!-------------------------------- Start Button Pause -------------------------------------->
       <div class="paused" id="btnpaused">
-        <button class="btnPause" onclick="Paused()">| |</button>
+        <button class="btnPause" onclick="Paused()">
+          <img src="../Img/Tombol-Paused.png" />
+        </button>
       </div>
       <!-------------------------------- End Button Pause -------------------------------------->
 
@@ -23,49 +25,57 @@
 
       <!------------------------ Start Gameover -------------------------------------->
       <div class="gameover" id="btnGameover">
-        <h1 class="title-gameover">GAME OVER</h1>
-        <h2 class="title-gameover">You Lose</h2>
-        <h2 class="title-gameover">Play Again?</h2>
-        <button class="btnPlayAgain" onclick="Restart()">Yes</button>
+        <div id="WadahTitle-gameover">
+          <h1 id="title-gameover">GAME OVER</h1>
+        </div>
+        <h2 class="You-Lose">You Lose</h2>
+        <button class="btnPlayAgain" onclick="Restart()">
+          <img src="../Img/Tombol-Restart.png" />
+        </button>
         <a href="../MainMenu/Level.html"
-          ><button class="btnPlayAgain">No</button></a
-        >
+          ><button class="btnPlayAgain">
+            <img src="../Img/Tombol-Exit.png" /></button
+        ></a>
       </div>
       <!------------------------ End Gameover -------------------------------------->
 
       <!------------------------ Start Gamefinish -------------------------------------->
       <div class="gamefinish" id="btnGamefinish">
-        <h1 class="title-finishgame">YOU WINNER</h1>
-        <h2 class="title-finishgame">Next?</h2>
+        <div id="WadahTitle-gamefinish">
+          <h1 id="title-gamefinish">FINISH</h1>
+        </div>
+        <h2 class="title-finishgame">YOU WINNER</h2>
         <a href="../LevelTwo/LevelTwo.html"
-          ><button class="btnNext">Next</button></a
-        >
-        <button class="btnNext" onclick="Restart()">Play Again</button>
+          ><button class="btnNext">
+            <img src="../Img/Tombol-Resume.png" /></button
+        ></a>
+        <button class="btnNext" onclick="Restart()">
+          <img src="../Img/Tombol-Restart.png" />
+        </button>
         <a href="../MainMenu/Level.html"
-          ><button class="btnNext">Quit</button></a
-        >
+          ><button class="btnNext"><img src="../Img/Tombol-Exit.png" /></button
+        ></a>
       </div>
       <!------------------------ End Gamefinish -------------------------------------->
 
       <!------------------------ Start Gamepause -------------------------------------->
+
       <div class="pausegame" id="btnpausegame">
-        <h1 id="title-pausegame">Game Pause</h1>
-        <li>
-          <button id="btnResume" class="btnPausedGame" onclick="Resume()">
-            Resume
-          </button>
-        </li>
-        <li>
-          <button id="btnRestart" class="btnPausedGame" onclick="Restart()">
-            Restart
-          </button>
-        </li>
+        <div id="WadahTitle-pausegame">
+          <h1 id="title-pausegame">PAUSED</h1>
+        </div>
+        <button id="btnResume" class="btnPausedGame" onclick="Resume()">
+          <img src="../Img/Tombol-Resume.png" alt="" />
+        </button>
+        <button id="btnRestart" class="btnPausedGame" onclick="Restart()">
+          <img src="../Img/Tombol-Restart.png" alt="" />
+        </button>
         <!-- Tombol quit -->
-        <li>
-          <a href="../MainMenu/Level.html">
-            <button id="btnQuit" class="btnPausedGame">Quit</button>
-          </a>
-        </li>
+        <a href="../MainMenu/Level.html">
+          <button id="btnQuit" class="btnPausedGame">
+            <img src="../Img/Tombol-Exit.png" alt="" />
+          </button>
+        </a>
       </div>
       <!------------------------ End Gamepause -------------------------------------->
     </div>
@@ -79,16 +89,24 @@
       var btnGameFinish = document.getElementById("btnGamefinish");
       var btnGameover = document.getElementById("btnGameover");
       var btnPausegame = document.getElementById("btnpausegame");
+      var INTERVAL = {
+        start: function () {
+          this.interval = setInterval(updateGameArea, 20); //untuk memulai game
+        },
+        stop: function () {
+          clearInterval(this.interval); //untuk pause game
+        },
+      };
 
       //   Resume menu
       function Resume() {
-        setInterval(updateGameArea, 20);
+        INTERVAL.start();
         HidePausegame();
       }
 
       //   Pause menu
       function Paused() {
-        myGameArea.stop();
+        INTERVAL.stop();
         Pausegame();
       }
 
@@ -133,7 +151,7 @@
         window.location.reload();
       }
 
-      //   Asset game
+      //   Asset
       function startGame() {
         myGamePiece = new component(
           100,
@@ -163,7 +181,7 @@
           this.context = this.canvas.getContext("2d");
           document.body.insertBefore(this.canvas, document.body.childNodes[0]);
           this.frameNo = 0;
-          this.interval = setInterval(updateGameArea, 20);
+          INTERVAL.start();
           ObstaclesEasy();
           Finish();
 
@@ -179,9 +197,9 @@
           this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         },
         // function untuk berhenti
-        stop: function () {
-          clearInterval(this.interval);
-        },
+        // stop: function () {
+        //   clearInterval(this.interval);
+        // },
       };
 
       //   Bahan bahan untuk mengisi wadah
@@ -415,7 +433,7 @@
 
       function Finish() {
         myObstaclesFinish.push(
-          new component(300, 400, "../Img/Pintu-Kuil.png", 7000, 200, "image")
+          new component(400, 400, "../Img/Pintu-Kuil.png", 7000, 200, "image")
         );
       }
 
