@@ -1,20 +1,58 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 body {
-  background-color: lightskyblue;
+  background: url("../Img/MenuAwal.png");
+}
+
+h1 {
+  position: relative;
+  top: 100px;
+  font-size: 40px;
+  text-align: center;
+  color: white;
 }
 
 #Container {
-  background-color: salmon;
+  position: relative;
+  top: 150px;
+  left: 60px;
+  background-color: blue;
+  border: 3px solid black;
+  width: 1200px;
+  height: 160px;
+  padding: 20px;
+}
+
+#Container p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  color: white;
+  font-size: 28px;
+}
+
+#back {
+  position: absolute;
+  left: 10px;
+  top: 20px;
 }
 
 .btnBack {
   position: relative;
-  margin-top: 20px;
-  margin-left: 400px;
-  width: 400px;
-  height: 60px;
+  border-radius: 50px;
+  font-size: 30px;
+  top: 10px;
+  left: 20px;
+  width: 70px;
+  height: 70px;
+}
+
+#back img {
+  width: 65px;
+  height: 65px;
 }
