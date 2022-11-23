@@ -12,38 +12,72 @@
   </head>
   <body onload="startGame()">
     <div>
+      <!-------------------------------- Start Button Pause -------------------------------------->
       <div class="paused" id="btnpaused">
-        <button onclick="Paused()">| |</button>
+        <button class="btnPause" onclick="Paused()">
+          <img src="../Img/Tombol-Paused.png" />
+        </button>
       </div>
+      <!-------------------------------- End Button Pause -------------------------------------->
+
+      <!-------------------------------- Canvas -------------------------------------->
       <canvas width="1280" height="720" id="canvas" class="AreaGame"> </canvas>
+
+      <!------------------------ Start Gameover -------------------------------------->
       <div class="gameover" id="btnGameover">
-        <h1>GAME OVER</h1>
-        <h2>You Lose</h2>
-        <h2>Play Again?</h2>
-        <button onclick="Restart()">Play Again?</button>
-        <a href="../MainMenu/Level.html"> <button>Quit</button> </a>
+        <div id="WadahTitle-gameover">
+          <h1 id="title-gameover">GAME OVER</h1>
+        </div>
+        <h2 class="You-Lose">YOU LOSE!!!</h2>
+        <button class="btnPlayAgain" onclick="Restart()">
+          <img src="../Img/Tombol-Restart.png" />
+        </button>
+        <a href="../MainMenu/Level.html"
+          ><button class="btnPlayAgain">
+            <img src="../Img/Tombol-Exit.png" /></button
+        ></a>
       </div>
+      <!------------------------ End Gameover -------------------------------------->
+
+      <!------------------------ Start Gamefinish -------------------------------------->
       <div class="gamefinish" id="btnGamefinish">
-        <h1>GAME Finish</h1>
-        <br />
-        <br />
-        <h2>You Win</h2>
-        <h2>Next Level?</h2>
-        <li>
-          <a href=""> <button>Restart?</button> </a>
-        </li>
+        <div id="WadahTitle-gamefinish">
+          <h1 id="title-gamefinish">FINISH</h1>
+        </div>
+        <h2 class="title-finishgame">YOU WINNER!!!</h2>
+        <a href="../LevelThree/LevelThree.html"
+          ><button class="btnNext">
+            <img src="../Img/Tombol-Next.png" /></button
+        ></a>
+        <button class="btnNext" onclick="Restart()">
+          <img src="../Img/Tombol-Restart.png" />
+        </button>
+        <a href="../MainMenu/Level.html"
+          ><button class="btnNext"><img src="../Img/Tombol-Exit.png" /></button
+        ></a>
       </div>
+      <!------------------------ End Gamefinish -------------------------------------->
+
+      <!------------------------ Start Gamepause -------------------------------------->
+
       <div class="pausegame" id="btnpausegame">
-        <h1>Pause Game</h1>
-        <li><button onclick="Resume()">Resume</button></li>
-        <li><button onclick="Restart()">Restart</button></li>
+        <div id="WadahTitle-pausegame">
+          <h1 id="title-pausegame">PAUSED</h1>
+        </div>
+        <button id="btnResume" class="btnPausedGame" onclick="Resume()">
+          <img src="../Img/Tombol-Resume.png" alt="" />
+        </button>
+        <button id="btnRestart" class="btnPausedGame" onclick="Restart()">
+          <img src="../Img/Tombol-Restart.png" alt="" />
+        </button>
         <!-- Tombol quit -->
-        <li>
-          <a href="../MainMenu/Level.html">
-            <button>Quit</button>
-          </a>
-        </li>
+        <a href="../MainMenu/Level.html">
+          <button id="btnQuit" class="btnPausedGame">
+            <img src="../Img/Tombol-Exit.png" alt="" />
+          </button>
+        </a>
       </div>
+      <!------------------------ End Gamepause -------------------------------------->
     </div>
 
     <script>
@@ -52,21 +86,32 @@
       var myObstaclesFinish = [];
       var myScore;
       var myBackground;
+      // var mySound;
+      var myMusic;
       var btnGameFinish = document.getElementById("btnGamefinish");
       var btnGameover = document.getElementById("btnGameover");
       var btnPausegame = document.getElementById("btnpausegame");
-
-      //   Pause menu
-      function Paused() {
-        myGameArea.stop();
-        Pausegame();
-      }
+      var INTERVAL = {
+        start: function () {
+          this.interval = setInterval(updateGameArea, 20); //untuk memulai game
+        },
+        stop: function () {
+          clearInterval(this.interval); //untuk pause game
+        },
+      };
 
       //   Resume menu
       function Resume() {
-        myGameArea.start();
+        INTERVAL.start();
         HidePausegame();
       }
+
+      //   Pause menu
+      function Paused() {
+        INTERVAL.stop();
+        Pausegame();
+      }
+
       //   DOM untuk Pause Button
       function Pausegame() {
         if (btnPausegame.style.display == "none") {
@@ -76,6 +121,7 @@
         }
       }
 
+      //   DOM untuk hide pause button
       function HidePausegame() {
         if (btnPausegame.style.display == "block") {
           btnPausegame.style.display = "none";
@@ -107,6 +153,7 @@
         window.location.reload();
       }
 
+      //   Asset
       function startGame() {
         myGamePiece = new component(
           100,
@@ -124,22 +171,23 @@
           0,
           "image"
         );
-        // untuk mengatur gravitasi
-        myGamePiece.gravity = 0.2;
-        myScore = new component("30px", "Consolas", "black", 280, 40, "text");
-        myGameArea.start();
+        // mySound = new sound("bounce.mp3");
+        myMusic = new sound("../Music/BacksoundGame.mp3");
+        myMusic.play();
+        myGamePiece.gravity = 0.2; // untuk mengatur gravitasi
+        myScore = new component("30px", "Arial", "Blue", 500, 40, "text");
+        myGameArea.start(); // Untuk memulai game
       }
 
-      // Untuk memulai game
+      //   Arena canvas untuk wadah permainan
       var myGameArea = {
         canvas: document.getElementById("canvas"),
         start: function () {
           this.context = this.canvas.getContext("2d");
           document.body.insertBefore(this.canvas, document.body.childNodes[0]);
           this.frameNo = 0;
-          this.interval = setInterval(updateGameArea, 20);
+          INTERVAL.start();
           ObstaclesEasy();
-          // GameFinish();
           Finish();
 
           // Untuk keyboard sebagai controller
@@ -153,12 +201,9 @@
         clear: function () {
           this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         },
-        // function untuk berhenti
-        stop: function () {
-          clearInterval(this.interval);
-        },
       };
 
+      //   Bahan bahan untuk mengisi wadah
       function component(width, height, color, x, y, type) {
         this.type = type;
         if (type == "image") {
@@ -180,6 +225,9 @@
             ctx.font = this.width + " " + this.height;
             ctx.fillStyle = color;
             ctx.fillText(this.text, this.x, this.y);
+            ctx.strokeStyle = "Black";
+            ctx.strokeText(this.text, this.x, this.y);
+            ctx.stroke();
           } else {
             ctx = myGameArea.context;
             if (type == "image") {
@@ -196,6 +244,7 @@
             }
           }
         };
+        // Funtion untuk karakter bergerak
         this.newPos = function () {
           this.gravitySpeed += this.gravity;
           this.x += this.speedX;
@@ -204,7 +253,7 @@
           this.hitTop();
         };
         this.hitBottom = function () {
-          var rockbottom = myGameArea.canvas.height - this.height;
+          var rockbottom = myGameArea.canvas.height - this.height; //250 sebuah opsi
           if (this.y > rockbottom) {
             this.y = rockbottom;
             this.gravitySpeed = 0;
@@ -242,135 +291,194 @@
       // Obstacle manual
       function ObstaclesEasy() {
         x = myGameArea.canvas.width;
+        // Obstacle One
         myObstacles.push(
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
+            "../Img/LongObstacleAtas.png",
             x,
-            400,
-            "image"
-          )
-        );
-        myObstacles.push(
-          new component(
-            100,
-            400,
-            "../Img/NewObstacleAtas.png",
-            1600,
-            -130,
-            "image"
-          )
-        );
-        myObstacles.push(
-          new component(
-            100,
-            400,
-            "../Img/NewObstacleBawah.png",
-            1900,
-            400,
-            "image"
-          )
-        );
-        myObstacles.push(
-          new component(
-            100,
-            400,
-            "../Img/NewObstacleAtas.png",
-            2400,
             -50,
             "image"
           )
         );
+        // Obstacle Two
         myObstacles.push(
           new component(
             100,
             400,
-            "../Img/NewObstacleAtas.png",
-            2850,
-            -200,
-            "image"
-          ),
-          new component(
-            100,
+            "../Img/LongObstacleBawah.png",
+            1600,
             400,
-            "../Img/NewObstacleBawah.png",
-            2850,
-            500,
             "image"
           )
         );
+        // Obstacle Three
+        myObstacles.push(
+          new component(
+            100,
+            450,
+            "../Img/LongObstacleBawah.png",
+            1900,
+            300,
+            "image"
+          )
+        );
+        // Obstacle Four
         myObstacles.push(
           new component(
             100,
             400,
-            "../Img/NewObstacleAtas.png",
-            3350,
+            "../Img/LongObstacleAtas.png",
+            2300,
+            -100,
+            "image"
+          )
+        );
+        // Obstacle Five
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/LongObstacleAtas.png",
+            2500,
+            0,
+            "image"
+          )
+        );
+        // Obstacle Six
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/LongObstacleBawah.png",
+            2500,
+            650,
+            "image"
+          )
+        );
+        // Obstacle Seven
+        myObstacles.push(
+          new component(
+            100,
+            400,
+            "../Img/LongObstacleAtas.png",
+            2900,
             -270,
             "image"
           ),
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
-            3350,
+            "../Img/LongObstacleBawah.png",
+            2900,
             370,
             "image"
           )
         );
+        // Obstacle Eight
         myObstacles.push(
           new component(
             100,
             500,
-            "../Img/NewObstacleAtas.png",
-            3850,
+            "../Img/LongObstacleAtas.png",
+            3200,
             -150,
             "image"
-          ),
+          )
+        );
+        //Obstacle nine
+        myObstacles.push(
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
-            3850,
+            "../Img/LongObstacleBawah.png",
+            3200,
             600,
             "image"
           )
         );
+        // Obstacle Ten
         myObstacles.push(
           new component(
             100,
             500,
-            "../Img/NewObstacleAtas.png",
-            4350,
+            "../Img/LongObstacleAtas.png",
+            3500,
             -300,
             "image"
           ),
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
-            4350,
+            "../Img/LongObstacleBawah.png",
+            3500,
             400,
             "image"
           )
         );
+        // Obstacle Eleven
         myObstacles.push(
           new component(
             100,
             500,
-            "../Img/NewObstacleAtas.png",
-            5000,
-            0,
+            "../Img/LongObstacleAtas.png",
+            3800,
+            -300,
+            "image"
+          ),
+          new component(
+            100,
+            400,
+            "../Img/LongObstacleBawah.png",
+            3800,
+            400,
             "image"
           )
         );
+        //Obstacle Twelve
         myObstacles.push(
           new component(
             100,
             500,
-            "../Img/NewObstacleBawah.png",
-            5700,
-            230,
+            "../Img/LongObstacleAtas.png",
+            4000,
+            -300,
+            "image"
+          ),
+          new component(
+            100,
+            400,
+            "../Img/LongObstacleBawah.png",
+            4000,
+            400,
+            "image"
+          )
+        );
+        // Obstacle Thirty
+        myObstacles.push(
+          new component(
+            100,
+            500,
+            "../Img/LongObstacleAtas.png",
+            4500,
+            0,
+            "image"
+          ),
+          new component(
+            100,
+            600,
+            "../Img/LongObstacleBawah.png",
+            5200,
+            300,
+            "image"
+          ),
+          new component(
+            100,
+            600,
+            "../Img/LongObstacleAtas.png",
+            5900,
+            0,
             "image"
           )
         );
@@ -378,18 +486,11 @@
 
       function Finish() {
         myObstaclesFinish.push(
-          new component(
-            300,
-            400,
-            "../Img/NewObstacleBawah.png",
-            7000,
-            200,
-            "image"
-          )
+          new component(700, 720, "../Img/Pintu-Kuil.png", 7000, 0, "image")
         );
       }
 
-      console.log(myObstaclesFinish);
+      //   Agar Game Bergerak
       function updateGameArea() {
         // Gameover ketika karakter menabrak obstacle
         for (i = 0; i < myObstacles.length; i += 1) {
@@ -417,10 +518,14 @@
           myGamePiece.speedY = -10;
           myGamePiece.gravitySpeed = 0;
         }
+        if (
+          (myGameArea.key && myGameArea.key == 83) ||
+          (myGameArea.key && myGameArea.key == 40)
+        ) {
+          myGamePiece.speedY = 10;
+          // myGamePiece.gravitySpeed = 0;
+        }
         myGameArea.frameNo += 1;
-        // if (myGameArea.frameNo == 1 || everyinterval(150)) {
-        //   ObstaclesEasy();
-        // }
 
         // Logika perulangan obstacle bergerak
         for (i = 0; i < myObstacles.length; i += 1) {
@@ -432,14 +537,10 @@
           myObstaclesFinish[j].update();
         }
 
-        myScore.text = "SCORE: " + myGameArea.frameNo;
+        myScore.text = " LEVEL 2 ";
         myScore.update();
         myGamePiece.newPos();
         myGamePiece.update();
-        // Finish
-        if (myObstacles.length == 10) {
-          alert("You Win");
-        }
       }
 
       function everyinterval(n) {
@@ -448,6 +549,22 @@
         }
         return false;
       }
+
+      function sound(src) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function () {
+          this.sound.play();
+        };
+        this.stop = function () {
+          this.sound.pause();
+        };
+      }
     </script>
   </body>
 </html>
+`
