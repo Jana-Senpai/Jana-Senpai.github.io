@@ -5,69 +5,122 @@
 }
 
 body {
-  background-color: rgb(206, 45, 9);
+  background: url("./Img/MenuAwal.png");
+  overflow: hidden;
+}
+
+#pintu-kuil {
+  position: relative;
+  left: 230px;
+  top: 100px;
+  width: 1100px;
+  height: 700px;
+}
+
+#pintu-kuil img {
+  width: 900px;
+  height: 700px;
 }
 
 #title-Game {
   position: absolute;
+  text-shadow: 20px white;
   font-family: Arial, Helvetica, sans-serif;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 30px;
-  color: white;
-  left: 480px;
+  color: black;
+  left: 450px;
   top: 30px;
 }
 
 #Container {
   display: block;
-  background-color: aqua;
   position: absolute;
   left: 400px;
-  top: 150px;
+  top: 350px;
   width: 600px;
   height: 400px;
 }
 
-.title-mainMenu {
+#Container button {
   position: relative;
-  margin-top: 20px;
-  margin-left: 180px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
-  font-size: 50px;
-}
-
-#Container li {
-  list-style-type: none;
-}
-
-#Container li a {
-  text-decoration: none;
-}
-
-#Container li a button {
-  position: relative;
+  cursor: pointer;
   font-family: "Times New Roman", Times, serif;
-  background-color: blue;
+  background-color: red;
+  border-radius: 50px;
   font-size: 24px;
   margin-left: 100px;
 }
 
 .btnPlay {
   position: relative;
-  margin-top: 40px;
-  width: 400px;
+  cursor: pointer;
+  left: 40px;
+  margin-top: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  width: 300px;
   height: 60px;
 }
+
+/* START SET UP */
+#SetUp {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 200px;
+  height: 300px;
+}
+
+#SetUp button {
+  position: relative;
+  font-family: "Times New Roman", Times, serif;
+  cursor: pointer;
+  background-color: red;
+  border-radius: 50px;
+  font-size: 24px;
+  margin-left: 20px;
+  left: 5px;
+}
+
 .btnAbout {
   position: relative;
-  margin-top: 20px;
-  width: 400px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
 }
+
+.btnAbout img {
+  width: 20px;
+  height: 53px;
+}
+
 .btnSetting {
   position: relative;
-  margin-top: 20px;
-  width: 400px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
+}
+
+.btnSetting img {
+  width: 50px;
+  height: 50px;
+}
+/* CLOSE SET UP */
+
+footer {
+  font-family: sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: white;
+  position: relative;
+  left: 80px;
+}
+
+footer a {
+  text-decoration: none;
+  color: red;
+}
+
+footer a:hover {
+  text-decoration: none;
+  color: blue;
 }
