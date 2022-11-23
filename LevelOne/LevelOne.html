@@ -28,7 +28,7 @@
         <div id="WadahTitle-gameover">
           <h1 id="title-gameover">GAME OVER</h1>
         </div>
-        <h2 class="You-Lose">You Lose</h2>
+        <h2 class="You-Lose">YOU LOSE!!!</h2>
         <button class="btnPlayAgain" onclick="Restart()">
           <img src="../Img/Tombol-Restart.png" />
         </button>
@@ -44,10 +44,10 @@
         <div id="WadahTitle-gamefinish">
           <h1 id="title-gamefinish">FINISH</h1>
         </div>
-        <h2 class="title-finishgame">YOU WINNER</h2>
+        <h2 class="title-finishgame">YOU WINNER!!!</h2>
         <a href="../LevelTwo/LevelTwo.html"
           ><button class="btnNext">
-            <img src="../Img/Tombol-Resume.png" /></button
+            <img src="../Img/Tombol-Next.png" /></button
         ></a>
         <button class="btnNext" onclick="Restart()">
           <img src="../Img/Tombol-Restart.png" />
@@ -86,6 +86,8 @@
       var myObstaclesFinish = [];
       var myScore;
       var myBackground;
+      var myMusic;
+      var mySound;
       var btnGameFinish = document.getElementById("btnGamefinish");
       var btnGameover = document.getElementById("btnGameover");
       var btnPausegame = document.getElementById("btnpausegame");
@@ -101,12 +103,14 @@
       //   Resume menu
       function Resume() {
         INTERVAL.start();
+        // myMusic.play();
         HidePausegame();
       }
 
       //   Pause menu
       function Paused() {
         INTERVAL.stop();
+        // myMusic.close();
         Pausegame();
       }
 
@@ -169,8 +173,11 @@
           0,
           "image"
         );
+        mySound = new sound("../Music/SoundGameOver.mp3");
+        myMusic = new sound("../Music/BacksoundGame.mp3");
+        myMusic.play();
         myGamePiece.gravity = 0.2; // untuk mengatur gravitasi
-        myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+        myScore = new component("30px", "Arial", "Blue", 500, 40, "text");
         myGameArea.start(); // Untuk memulai game
       }
 
@@ -196,10 +203,6 @@
         clear: function () {
           this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         },
-        // function untuk berhenti
-        // stop: function () {
-        //   clearInterval(this.interval);
-        // },
       };
 
       //   Bahan bahan untuk mengisi wadah
@@ -224,6 +227,9 @@
             ctx.font = this.width + " " + this.height;
             ctx.fillStyle = color;
             ctx.fillText(this.text, this.x, this.y);
+            ctx.strokeStyle = "Black";
+            ctx.strokeText(this.text, this.x, this.y);
+            ctx.stroke();
           } else {
             ctx = myGameArea.context;
             if (type == "image") {
@@ -292,7 +298,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
+            "../Img/LongObstacleBawah.png",
             x,
             400,
             "image"
@@ -303,7 +309,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleAtas.png",
+            "../Img/LongObstacleAtas.png",
             1600,
             -130,
             "image"
@@ -314,7 +320,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
+            "../Img/LongObstacleBawah.png",
             1900,
             400,
             "image"
@@ -325,7 +331,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleAtas.png",
+            "../Img/LongObstacleAtas.png",
             2400,
             -50,
             "image"
@@ -336,7 +342,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleAtas.png",
+            "../Img/LongObstacleAtas.png",
             2850,
             -200,
             "image"
@@ -344,7 +350,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
+            "../Img/LongObstacleBawah.png",
             2850,
             500,
             "image"
@@ -355,17 +361,17 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleAtas.png",
-            3350,
+            "../Img/LongObstacleAtas.png",
+            3100,
             -270,
             "image"
           ),
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
-            3350,
-            370,
+            "../Img/LongObstacleBawah.png",
+            3100,
+            400,
             "image"
           )
         );
@@ -374,7 +380,7 @@
           new component(
             100,
             500,
-            "../Img/NewObstacleAtas.png",
+            "../Img/LongObstacleAtas.png",
             3850,
             -150,
             "image"
@@ -382,7 +388,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
+            "../Img/LongObstacleBawah.png",
             3850,
             600,
             "image"
@@ -393,7 +399,7 @@
           new component(
             100,
             500,
-            "../Img/NewObstacleAtas.png",
+            "../Img/LongObstacleAtas.png",
             4350,
             -300,
             "image"
@@ -401,7 +407,7 @@
           new component(
             100,
             400,
-            "../Img/NewObstacleBawah.png",
+            "../Img/LongObstacleBawah.png",
             4350,
             400,
             "image"
@@ -412,7 +418,7 @@
           new component(
             100,
             500,
-            "../Img/NewObstacleAtas.png",
+            "../Img/LongObstacleAtas.png",
             5000,
             0,
             "image"
@@ -423,7 +429,7 @@
           new component(
             100,
             500,
-            "../Img/NewObstacleBawah.png",
+            "../Img/LongObstacleBawah.png",
             5700,
             230,
             "image"
@@ -433,7 +439,7 @@
 
       function Finish() {
         myObstaclesFinish.push(
-          new component(400, 400, "../Img/Pintu-Kuil.png", 7000, 200, "image")
+          new component(700, 720, "../Img/Pintu-Kuil.png", 7000, 0, "image")
         );
       }
 
@@ -443,12 +449,15 @@
         for (i = 0; i < myObstacles.length; i += 1) {
           if (myGamePiece.crashWith(myObstacles[i])) {
             Gameover();
+            myMusic.close();
+            mySound.play();
             return;
           }
         }
         for (j = 0; j < myObstaclesFinish.length; j += 1) {
           if (myGamePiece.crashWith(myObstaclesFinish[j])) {
             GameFinish();
+            myMusic.close();
             return;
           }
         }
@@ -465,6 +474,13 @@
           myGamePiece.speedY = -10;
           myGamePiece.gravitySpeed = 0;
         }
+        if (
+          (myGameArea.key && myGameArea.key == 83) ||
+          (myGameArea.key && myGameArea.key == 40)
+        ) {
+          myGamePiece.speedY = 10;
+          myGamePiece.gravitySpeed = 0;
+        }
         myGameArea.frameNo += 1;
 
         // Logika perulangan obstacle bergerak
@@ -477,7 +493,7 @@
           myObstaclesFinish[j].update();
         }
 
-        myScore.text = "SCORE: " + myGameArea.frameNo;
+        myScore.text = " LEVEL 1 ";
         myScore.update();
         myGamePiece.newPos();
         myGamePiece.update();
@@ -488,6 +504,21 @@
           return true;
         }
         return false;
+      }
+
+      function sound(src) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function () {
+          this.sound.play();
+        };
+        this.close = function () {
+          this.sound.pause();
+        };
       }
     </script>
   </body>
